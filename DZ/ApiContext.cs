@@ -30,9 +30,15 @@ namespace DZ
 
             var camp = new Company[]
             {
-                new Company { Id=1, NameCamp="Giga", Specializations = new List<Specialization>() { sp[0] } },
-                new Company { Id=2, NameCamp="MKB", Specializations = new List<Specialization>() { sp[1] } }
+                new Company { Id=1, NameCamp="Giga" },
+                new Company { Id=2, NameCamp="MKB"}
             };
+
+            //var camp = new Company[]
+            //{
+            //    new Company { Id=1, NameCamp="Giga", Specializations = new List<Specialization>() { sp[0] } },
+            //    new Company { Id=2, NameCamp="MKB", Specializations = new List<Specialization>() { sp[1] } }
+            //};
 
 
             var emp = new Employee[]

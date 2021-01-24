@@ -123,13 +123,11 @@ namespace DZ
             {
                 return false;
             }
-            //if (db.Companies.Any(s => s.Specialization.Exists(t => t.Id == idSp) == true))
-            //{
-            //    return false;
-            //}
-            var u = db.Companies.Select(s => new test() {Employies = s.Employies });
-
-            
+            if (db.Companies.Any(s => s.Employies.Any(t => t.Id == idCp) == true))
+            {
+                return false;
+            }
+                        
             Company comany = db.Companies.FirstOrDefault(x => x.Id == idCp);
             db.Companies.Remove(comany);
             db.SaveChanges();
