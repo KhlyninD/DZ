@@ -21,6 +21,7 @@ namespace DZ
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<DataManager>();
             services.AddDbContext<ApiContext>(options => options.UseInMemoryDatabase(databaseName: "CompanyAndEmployee"));
             services.AddSwaggerGen();
         }

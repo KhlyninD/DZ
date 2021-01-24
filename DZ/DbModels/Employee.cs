@@ -7,6 +7,7 @@ namespace DZ.DbModels
 {
     public class Employee
     {
+        
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
@@ -14,10 +15,10 @@ namespace DZ.DbModels
         public string Surname { get; set; }
         [Required]
         public string Otchestvo { get; set; }
-        public DateTime Birthday { get; set; }
+        public string Birthday { get; set; }
         
         public int CompanyId { get; set; }
-       // [Required]
+        [Required]
         public Company Company { get; set; }
 
     }
