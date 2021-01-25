@@ -50,27 +50,16 @@ namespace DZ
         }
 
         // Добавление новой компании
-        public bool Post(string nameCompany, string nameSpecialization)
+        public bool Post(string nameCompany, int idSpecialization)
         {
-            if (db.Companies.Any(u => u.NameCamp.ToLower() == nameCompany.ToLower()))
+            if (db.Companies.Any(u => u.NameCamp.ToLower() == nameCompany.ToLower()) && !db.Specializations.Any(s => s.Id == idSpecialization))
             {
                 return false;
             }
-            var sp = db.Specializations.Where(s => s.NameSpecialization.ToLower() == nameSpecialization.ToLower());
-            Company cp = new Company { NameCamp = nameCompany, Specializations = new List<Specialization>(sp) }; 
-            db.Companies.Add(cp);
-            db.SaveChangesAsync();
-            return true;
-        }
-
-        // Добавление нового сотрудника по названию компании
-        public bool Post(string name, string surname, string otchestvo, string nameCompany, string birthday)
-        {
-            if (!db.Companies.Any(с => с.NameCamp.ToLower() == nameCompany.ToLower()))
-                return false;
+            var sp = db.Specializations.Select(c => new Specialization() { Id = c.Id, NameSpecialization = c.NameSpecialization }).Where(c => c.Id == idSpecialization).ToList();
             
-            Employee ep = new Employee { Name = name, Surname = surname, Otchestvo = otchestvo, Birthday = birthday, CompanyId = 1};
-            db.Employies.Add(ep);
+            Company cp = new Company { NameCamp = nameCompany, Specializations = new List<Specialization>() { sp[0]} }; 
+            db.Companies.Add(cp);
             db.SaveChangesAsync();
             return true;
         }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DZ.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/Employee/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
@@ -20,23 +20,13 @@ namespace DZ.Controllers
             db = new DataManager(context);
         }
 
-        [HttpGet("Вывод всех сотрудников")]
+        [HttpGet("GetAllEmployee")]
         public IEnumerable<Information> Get()
         {
             return db.GetAllEmployee();
         }
 
-        [HttpPost("Добавление сотрудника по названию компании")]
-        public ActionResult<Employee> Post(string name, string surname, string otchestvo, string nameCompany, string birthday = "не задано")
-        {
-            if (name == null || surname == null || otchestvo == null || nameCompany == null || !db.Post(name, surname, otchestvo, nameCompany, birthday))
-            {
-                return BadRequest();
-            }
-
-            return Ok(String.Join(", ", name, surname, otchestvo));
-        }
-        [HttpPost("Добавление сотрудника по Id компании")]
+        [HttpPost("PostEmployeeId")]
         public ActionResult<Employee> Post(string name, string surname, string otchestvo, int idCompany, string birthday = "не задано")
         {
             if (name == null || surname == null || otchestvo == null || !db.Post(name, surname, otchestvo, idCompany, birthday))
@@ -47,7 +37,7 @@ namespace DZ.Controllers
             return Ok(String.Join(", ", name, surname, otchestvo));
         }
 
-        [HttpDelete("Удаление Сотрудника")]
+        [HttpDelete("DeleteEmployee")]
         public ActionResult<Company> DeleteE(int id)
         {
 

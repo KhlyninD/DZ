@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DZ.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Specialization/[controller]")]
     [ApiController]
     public class SpecializationController : ControllerBase
     {
@@ -20,31 +20,33 @@ namespace DZ.Controllers
             db = new DataManager(context);
         }
 
-        [HttpGet("Вывод всех специализаций")]
+        // Вывод списка специализаций
+        [HttpGet("GetAllSpecialization")]
         public  IEnumerable<Information> Get()
         {
             return db.GetAllSpecialization();
         }
 
-        [HttpPost("Добавление новой специализации")]
-        public ActionResult<Specialization> Post(string name)
+        // Добавление специализации
+        [HttpPost("PostSpecialization")]
+        public ActionResult<Specialization> Post(string specialization)
         {
-            if (name == null || !db.Post(name))
+            if (specialization == null || !db.Post(specialization))
             {
                 return BadRequest();
             }
-            return Ok(name);
+            return Ok(specialization);
         }
-
-        [HttpDelete("Удаление специализации по ID")]
-        public ActionResult<Specialization> Delete(int id)
+        //Удаление специализации по ID
+        [HttpDelete("DeleteSpecializationID")]
+        public ActionResult<Specialization> Delete(int idSpecialization)
         {
 
-            if (!db.DeleteS(id))
+            if (!db.DeleteS(idSpecialization))
             {
                 return BadRequest();
             }
-            return Ok(id);
+            return Ok(idSpecialization);
         }
 
         //[HttpPut("Изменение специализации")]

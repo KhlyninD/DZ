@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DZ.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Company/[controller]")]
     [ApiController]
     public class CompanyController : ControllerBase
     {
@@ -19,24 +19,24 @@ namespace DZ.Controllers
         {
             db = new DataManager(context);
         }
-
-        [HttpGet("Вывод всех компаний")]
+        // Вывод списка компаний
+        [HttpGet("GetAllCompany")]
         public IEnumerable<Information> Get()
         {
             return db.GetAllCompany();
         }
-
-        [HttpPost("Добавление новой компании компаний")]
-        public ActionResult<Company> Post(string nameCompany, string nameSpecialization)
+        // Добавление новой компании
+        [HttpPost("PostCompany")]
+        public ActionResult<Company> Post(string nameCompany, int idSpecialization)
         {
-            if (nameCompany == null || nameSpecialization == null || !db.Post(nameCompany, nameSpecialization))
+            if (nameCompany == null || !db.Post(nameCompany, idSpecialization))
             {
                 return BadRequest();
             }
             return Ok(nameCompany);
         }
-
-        [HttpDelete("Удаление компании")]
+        // Удаление компании
+        [HttpDelete("DeleteCompany")]
         public ActionResult<Company> Delete(int idCompany)
         {
 
