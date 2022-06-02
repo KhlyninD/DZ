@@ -9,68 +9,58 @@ using System.Threading.Tasks;
 
 namespace DZ.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Specialization/[controller]")]
     [ApiController]
     public class SpecializationController : ControllerBase
     {
-        ApiContext db;
+        DataManager db;
 
         public SpecializationController(ApiContext context)
         {
-            db = context;
-
+            db = new DataManager(context);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Specialization>>> Get()
+        // Вывод списка специализаций
+        [HttpGet("GetAllSpecialization")]
+        public  IEnumerable<Information> Get()
         {
-            return await db.Specializations.ToListAsync();
+            return db.GetAllSpecialization();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Specialization>> Post(string nameSpecialization)
+        // Добавление специализации
+        [HttpPost("PostSpecialization")]
+        public ActionResult<Specialization> Post(string specialization)
         {
-            if (nameSpecialization == null || db.Specializations.Any(u => u.NameSpecialization == nameSpecialization))
+            if (specialization == null || !db.Post(specialization))
             {
                 return BadRequest();
             }
-            Specialization sp = new Specialization { NameSpecialization = nameSpecialization };
-            db.Specializations.Add(sp);
-            await db.SaveChangesAsync();
-            return Ok(sp);
+            return Ok(specialization);
         }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Specialization>> Delete(int id)
+        //Удаление специализации по ID
+        [HttpDelete("DeleteSpecializationID")]
+        public ActionResult<Specialization> Delete(int idSpecialization)
         {
-            Specialization special = db.Specializations.FirstOrDefault(x => x.Id == id);
-            if (special == null)
-            {
-                return NotFound();
-            }
-            db.Specializations.Remove(special);
-            await db.SaveChangesAsync();
-            return Ok(special);
-        }
 
-        [HttpPut]
-        public async Task<ActionResult<Specialization>> Put(Specialization special)
-        {
-            if (special == null)
+            if (!db.DeleteS(idSpecialization))
             {
                 return BadRequest();
             }
-            if (!db.Specializations.Any(x => x.Id == special.Id))
-            {
-                return NotFound();
-            }
-
-            db.Update(special);
-            await db.SaveChangesAsync();
-            return Ok(special);
+            return Ok(idSpecialization);
         }
 
-        
+        //[HttpPut("Изменение специализации")]
+        //public ActionResult<Specialization> Put(string oldSpecial, string newSpecial)
+        //{
+        //    if (oldSpecial == null || newSpecial == null || !db.Put(oldSpecial, newSpecial))
+        //    {
+        //        return BadRequest();
+        //    }
+                      
+        //    return Ok(newSpecial);
+        //}
+
+
 
     }
 }

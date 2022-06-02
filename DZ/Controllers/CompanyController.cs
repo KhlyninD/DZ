@@ -9,64 +9,63 @@ using System.Threading.Tasks;
 
 namespace DZ.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Company/[controller]")]
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        ApiContext db;
+        DataManager db;
 
         public CompanyController(ApiContext context)
         {
-            db = context;
+            db = new DataManager(context);
         }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Company>>> Get()
+        // Вывод списка компаний
+        [HttpGet("GetAllCompany")]
+        public IEnumerable<Information> Get()
         {
-            return await db.Companies.ToListAsync();
+            return db.GetAllCompany();
         }
-
-        //[HttpPost]
-        //public async Task<ActionResult<Company>> Post(string nameSpecialization)
-        //{
-        //    if (nameSpecialization == null || db.Companies.Any(u => u.NameCamp == nameSpecialization))
-        //    {
-        //        return BadRequest();
-        //    }
-        //    Specialization sp = new Company { NameCamp = nameSpecialization };
-        //    db.Companies.Add(sp);
-        //    await db.SaveChangesAsync();
-        //    return Ok(sp);
-        //}
-
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<Company>> Delete(int id)
-        //{
-        //    Specialization special = db.Companies.FirstOrDefault(x => x.Id == id);
-        //    if (special == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    db.Companies.Remove(special);
-        //    await db.SaveChangesAsync();
-        //    return Ok(special);
-        //}
-
-        [HttpPut]
-        public async Task<ActionResult<Company>> Put(Company special)
+        // Добавление новой компании
+        [HttpPost("PostCompany")]
+        public ActionResult<Company> Post(string nameCompany, int idSpecialization)
         {
-            if (special == null)
+            if (nameCompany == null || !db.Post(nameCompany, idSpecialization))
             {
                 return BadRequest();
             }
-            if (!db.Companies.Any(x => x.Id == special.Id))
-            {
-                return NotFound();
-            }
-
-            db.Update(special);
-            await db.SaveChangesAsync();
-            return Ok(special);
+            return Ok(nameCompany);
         }
+        // Удаление компании
+        [HttpDelete("DeleteCompany")]
+        public ActionResult<Company> Delete(int idCompany)
+        {
+
+            if (!db.DeleteС(idCompany))
+            {
+                return BadRequest();
+            }
+            return Ok(idCompany);
+        }
+
+        //[HttpPut("Изменение компании")]
+        //public ActionResult<Specialization> Put(string oldNameCamp, string newNameCamp, string oldSpecialization, string newSpecialization)
+        //{
+        //    if (oldNameCamp == null || newNameCamp == null || oldSpecialization == null || newSpecialization == null || !db.Put(oldNameCamp, newNameCamp, oldSpecialization, newSpecialization))
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    return Ok(String.Join(", ", newNameCamp, oldSpecialization));
+        //}
+
+        //[HttpPost("Получение информации о компании")]
+        //public ActionResult<Company> Post(int idCompany)
+        //{
+        //    if (idCompany == null || !db.PostnInfoCompany(idCompany))
+        //    {
+        //        return BadRequest();
+        //    }
+        //    return Ok(nameCompany);
+        //}
     }
 }

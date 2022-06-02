@@ -11,7 +11,7 @@ namespace DZ.DbModels
         [Required]
         public string NameCamp { get; set; }
         [Required]
-        public List<Specialization> Specialization { get; set; } = new List<Specialization>();
+        public List<Specialization> Specializations { get; set; } = new List<Specialization>();
 
         public List<Employee> Employies { get; set; } = new List<Employee>();
     }
